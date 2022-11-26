@@ -1,7 +1,7 @@
 /*
  * Описание кошелька
  */
-export interface WalletI {
+export interface UserWalletI {
     id: number; // id кошелька
     user_id: number; // id владельца счёта
     money: number; // Сколько валюты находится на счёте
@@ -20,7 +20,7 @@ export enum SupportedCurrenciesT {
 }
 
 /** Описание сущности кошелька */
-export class TransactionE {
+export class UserWalletE {
     /** Имя таблицы */
     public static NAME = 'user_wallet';
     

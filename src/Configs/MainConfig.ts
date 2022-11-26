@@ -12,7 +12,7 @@ export const dbCore = {
     client: CLIENT,
     connection: {
         host : HOST,
-        port : PG_PORT,    
+        port : Number(PG_PORT),    
         user: PG_USER,
         password: PASSWORD,
         database: DATABASE
