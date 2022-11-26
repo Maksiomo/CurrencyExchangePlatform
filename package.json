@@ -1,0 +1,40 @@
+{
+    "name": "currency-exchange.core",
+    "version": "0.0.1",
+    "description": "Тестовое задание с беком платформы обмена валют",
+    "dependencies": {
+        "axios": "^1.2.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "knex": "^2.3.0",
+        "lodash": "^4.17.21",
+        "node": "^19.1.0",
+        "pg": "^8.8.0",
+        "ts-jest": "^29.0.3",
+        "ts-node": "^10.9.1",
+        "typescript": "^4.9.3"
+    },
+    "scripts": {
+        "migration:create": "./node_modules/.bin/knex migrate:make",
+        "migration:up": "./node_modules/.bin/knex migrate:latest",
+        "migration:down": "./node_modules/.bin/knex migrate:rollback",
+        "migration:list": "./node_modules/.bin/knex migrate:list",
+        "start": "node ./build/index.js",
+        "watch": "./node_modules/.bin/tsc-watch --onSuccess \"node ./build/index.js\"",
+        "build": "./node_modules/.bin/tsc",
+        "dev": "./node_modules/.bin/ts-node ./src/index.ts",
+        "test": "./node_modules/.bin/jest"
+    },
+    "devDependencies": {
+        "@types/axios": "^0.14.0",
+        "@types/cors": "^2.8.12",
+        "@types/dotenv": "^8.2.0",
+        "@types/express": "^4.17.14",
+        "@types/jest": "^29.2.3",
+        "@types/knex": "^0.16.1",
+        "@types/lodash": "^4.14.190",
+        "@types/node": "^18.11.9",
+        "@types/pg": "^8.6.5"
+    }
+}

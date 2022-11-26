@@ -1,0 +1,7 @@
+### Исключаем NodeJS module
+node_modules/
+
+.vscode/
+build/
+
+.env
