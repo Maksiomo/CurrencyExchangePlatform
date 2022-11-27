@@ -14,9 +14,6 @@ export interface WalletI {
 export enum SupportedCurrenciesT {
     USD = 'USD',
     EUR = 'EUR',
-    RUB = 'RUB',
-    KZT = 'KZT',
-    GEL = 'GEL',
 }
 
 /** Описание сущности кошелька */

@@ -1,9 +1,42 @@
+import dayjs from "dayjs";
 import { BasePSQL } from "../BasePSQL";
 import { TradeE, TradeI } from "../Entity/TradeE";
 
 /** SQL запросы к таблице транзакций */
 export class TradePSQL extends BasePSQL {
 
+    /** получаем активные запросы на обмен */
+    public async listActiveTrade(): Promise<TradeI[]> {
+        let out: TradeI[] = [];
+
+        try {
+            out = await this.db<TradeI>(TradeE.NAME)
+                .where('is_resolved', false)
+                .andWhere('is_deleted', false)
+                .andWhere('target_date', '>=', dayjs())
+                .select();
+        } catch (e) {
+            console.log(e);
+        }
+        return out;
+    }
+
+    /** получаем просроченные запросы на обмен */
+    public async listOutdatedActiveTrade(): Promise<TradeI[]> {
+        let out: TradeI[] = [];
+
+        try {
+            out = await this.db<TradeI>(TradeE.NAME)
+            .where('is_resolved', false)
+            .andWhere('is_deleted', false)
+            .andWhere('target_date', '<', dayjs())
+                .select();
+        } catch (e) {
+            console.log(e);
+        }
+        return out;
+    }
+ 
     /** Получить транзакции пользователя списком */
     public async listTradeByUser(filter: {
         idUser: number,

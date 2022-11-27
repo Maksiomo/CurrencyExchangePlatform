@@ -16,7 +16,7 @@ export async function up(knex: Knex): Promise<void> {
             .notNullable()
             .comment('id владельца кошелька')
 
-        table.bigInteger('money')
+        table.decimal('money', 5)
             .defaultTo(0)
             .comment('Баланс кошелька')
 
@@ -24,9 +24,6 @@ export async function up(knex: Knex): Promise<void> {
             .enu('currency', [
                 'EUR',
                 'USD',
-                'RUB',
-                'KZT',
-                'GEL'
             ])
             .comment('Валюта кошелька')
             .notNullable();

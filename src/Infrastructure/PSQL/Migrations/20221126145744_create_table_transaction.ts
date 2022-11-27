@@ -16,7 +16,7 @@ export async function up(knex: Knex): Promise<void> {
             .notNullable()
             .comment('id пользователя сделавшего транзакцию')
         
-        table.decimal('money_out', 2)
+        table.decimal('money_out', 5)
             .notNullable()
             .defaultTo(0)
             .comment('Количество исходящей валюты');
@@ -24,15 +24,12 @@ export async function up(knex: Knex): Promise<void> {
         table.enu('currency_out', 
             [
                 'EUR',
-                'USD',
-                'RUB',
-                'KZT',
-                'GEL'
+                'USD'
             ])
             .comment('Исходящая валюта транзакции')
             .notNullable();
 
-        table.decimal('money_in', 2)
+        table.decimal('money_in', 5)
             .notNullable()
             .defaultTo(0)
             .comment('Количество входящей валюты');
@@ -40,10 +37,7 @@ export async function up(knex: Knex): Promise<void> {
         table.enu('currency_in', 
             [
                 'EUR',
-                'USD',
-                'RUB',
-                'KZT',
-                'GEL'
+                'USD'
             ])
             .comment('Входящая валюта транзакции')
             .notNullable();
