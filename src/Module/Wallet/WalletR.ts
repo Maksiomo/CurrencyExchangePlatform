@@ -1,7 +1,7 @@
-import { Context } from "../../Context";
+import { Context } from "../../System/Context";
 import { SupportedCurrenciesT, WalletI } from "../../Infrastructure/PSQL/Entity/WalletE";
 
-/** Модуль аутентификации пользователей */
+/** Модуль счетов пользователей */
 export namespace WalletR {
 
     /** Получить все счета пользователя */

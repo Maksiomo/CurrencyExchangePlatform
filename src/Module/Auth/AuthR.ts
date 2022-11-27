@@ -1,4 +1,4 @@
-import { Context } from "../../Context";
+import { Context } from "../../System/Context";
 
 /** Модуль аутентификации пользователей */
 export namespace AuthR {

@@ -17,7 +17,6 @@ export async function up(knex: Knex): Promise<void> {
             .comment('id пользователя сделавшего транзакцию')
         
         table.decimal('money_out', 2)
-            .index('money_out')
             .notNullable()
             .defaultTo(0)
             .comment('Количество исходящей валюты');
@@ -34,7 +33,6 @@ export async function up(knex: Knex): Promise<void> {
             .notNullable();
 
         table.decimal('money_in', 2)
-            .index('money_in')
             .notNullable()
             .defaultTo(0)
             .comment('Количество входящей валюты');
@@ -60,12 +58,14 @@ export async function up(knex: Knex): Promise<void> {
             .unsigned()
             .notNullable()
             .defaultTo(0)
+            .index('is_resolved')
             .comment('Была ли проведена транзакция');
         
         table.tinyint('is_deleted', 1)
             .unsigned()
             .notNullable()
             .defaultTo(0)
+            .index('is_deleted')
             .comment('Была ли отменена транзакция');
 
     })

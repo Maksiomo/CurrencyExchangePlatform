@@ -1,16 +1,14 @@
 import md5 from "md5";
-import { Context } from "../../../Context";
+import { Context } from "../../../System/Context";
 import { UserDataPSQL } from "../../../Infrastructure/PSQL/Repository/UserDataPSQL";
 import { AuthR as R } from "../AuthR";
 /** модель пользовательских данных */
 export class AuthM {
 
-    private ctx: Context;
     private userDataPSQL: UserDataPSQL;
 
     /** конструктор */
-    constructor(ctx: Context) {
-        this.ctx = ctx;
+    constructor() {
         this.userDataPSQL = new UserDataPSQL();
     }
 

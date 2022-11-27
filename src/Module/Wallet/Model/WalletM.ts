@@ -1,20 +1,14 @@
-import { Context } from "../../../Context";
+import { Context } from "../../../System/Context";
 import { WalletI } from "../../../Infrastructure/PSQL/Entity/WalletE";
-import { UserDataPSQL } from "../../../Infrastructure/PSQL/Repository/UserDataPSQL";
 import { WalletPSQL } from "../../../Infrastructure/PSQL/Repository/WalletPSQL";
 import { WalletR as R } from "../WalletR";
 /** модель пользовательских счетов */
 export class WalletM {
-
-    private ctx: Context;
     private walletPSQL: WalletPSQL;
-    private userDataPSQL: UserDataPSQL;
 
     /** конструктор */
-    constructor(ctx: Context) {
-        this.ctx = ctx;
+    constructor() {
         this.walletPSQL = new WalletPSQL();
-        this.userDataPSQL = new UserDataPSQL();
     }
 
     /** Получить все счета пользователя */
