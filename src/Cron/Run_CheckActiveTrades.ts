@@ -8,7 +8,7 @@ import { RabbisSys, TradeProcessWorkerI } from '../System/RabbitSys';
 
 const iCronSchedule = '5'; // время в минутах, через которое крон будет запускаться заново.
 
-interface MarketStateI {
+export interface MarketStateI {
     sPair: string,
     iCurrentPrice: number,
 }
@@ -86,6 +86,7 @@ export async function runTradeCron() {
                 const message: TradeProcessWorkerI = { 
                     trade_id: trade.id,
                     action: 'resolve',
+                    trade_price: vPairState.iCurrentPrice
                 }
                 rabbitSys.sendTradeToQueue(message);
             }
@@ -96,6 +97,7 @@ export async function runTradeCron() {
             const message: TradeProcessWorkerI = { 
                 trade_id: avOutdatedTrade[i].id,
                 action: 'reject',
+                trade_price: -1
             }
             rabbitSys.sendTradeToQueue(message);
         }
