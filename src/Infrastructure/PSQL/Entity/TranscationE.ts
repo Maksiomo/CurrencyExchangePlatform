@@ -1,4 +1,4 @@
-import { SupportedCurrenciesT } from "./UserWalletE";
+import { SupportedCurrenciesT } from "./WalletE";
 
 /**
  * Описание транзакции
