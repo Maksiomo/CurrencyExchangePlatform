@@ -5,8 +5,9 @@ import { WalletR as R } from "./WalletR";
 
 export class WalletCtrl {
   router = express.Router({ mergeParams: true });
+  public walletM = new WalletM();
 
-  constructor(private readonly walletM: WalletM) {
+  constructor() {
 
     this.router.get(
       R.listWallets.route,

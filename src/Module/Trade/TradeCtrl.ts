@@ -5,9 +5,10 @@ import { TradeR as R } from "./TradeR";
 
 
 export class TradeCtrl {
-  router = express.Router({ mergeParams: true });
+  public router = express.Router({ mergeParams: true });
+  public tradeM = new TradeM();
 
-  constructor(private readonly tradeM: TradeM) {
+  constructor() {
 
     this.router.get(
       R.listTrades.route,

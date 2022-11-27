@@ -104,7 +104,7 @@ export class TradeM {
             if (!vTrade) {
                 error_cause = 'У пользователя нет такого запроса на обмен';
             }
-            vTrade.is_deleted = true;
+            vTrade.is_deleted = 1;
             await this.tradePSQL.updateTrade(vTrade);
         }
 

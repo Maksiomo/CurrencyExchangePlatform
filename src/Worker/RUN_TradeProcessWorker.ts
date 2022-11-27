@@ -2,7 +2,7 @@ import client, { Channel, Connection, ConsumeMessage } from "amqplib";
 import { TradePSQL } from "../Infrastructure/PSQL/Repository/TradeSQL";
 import { WalletPSQL } from "../Infrastructure/PSQL/Repository/WalletPSQL";
 import { TradeProcessWorkerI } from "../System/RabbitSys";
-
+import path from 'path';
 
 /* имя очереди */
 const queryName = 'active_trade';
@@ -39,7 +39,7 @@ async function workProcess(msg: Buffer) {
                 // Пополняем входящий счет на сумму сделки
                 vWalletIn.money += vTrade.money_out / data.trade_price;
                 // Ставим отметку, что сделка прошла успешно
-                vTrade.is_resolved = true;
+                vTrade.is_resolved = 1;
                 // Обновляем записи в БД
                 await Promise.all([
                     walletPSQL.updateWallet(vWalletIn),
@@ -50,7 +50,7 @@ async function workProcess(msg: Buffer) {
         } else if (data.action === "reject") {
             // Если пришло сообщение с такой командой, ставим ему флаг что он удален
             const vTrade = await tradePSQL.oneWalletsByFilter({ idTrade: data.trade_id });
-            vTrade.is_deleted = true;
+            vTrade.is_deleted = 1;
             await tradePSQL.updateTrade(vTrade);
         } else {
             console.log('Некорректная команда для запроса: ', data);
@@ -62,6 +62,11 @@ async function workProcess(msg: Buffer) {
 
 /** запускатор + подключение к считыванию из Rabbit очереди */
 async function run() {
+
+
+    // Инициализируем .env
+    require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+
     const rabbitConnection: Connection = await client.connect(
         'amqp://username:password@localhost:5672'
     );
@@ -79,6 +84,8 @@ async function run() {
     }
 
     await tradeChannel.consume(queryName, consumer(tradeChannel));
+
+    console.log('Worker обработки запросов на обмен запущен');
 
 }
 

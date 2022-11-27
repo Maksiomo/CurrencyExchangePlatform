@@ -11,8 +11,8 @@ export interface TradeI {
     money_in: number; // Сколько валюты хотим получить после обмена
     currency_in: SupportedCurrenciesT; // Тип получаемой валюты
     target_date: string; // Желаемая дата, к которой транзакция должна быть произведена
-    is_resolved?: boolean; // Была ли транзакция выполнена
-    is_deleted?: boolean; // Была ли отменена транзакция
+    is_resolved?: number; // Была ли транзакция выполнена
+    is_deleted?: number; // Была ли отменена транзакция
 }
 
 /** Описание сущности транзакции */

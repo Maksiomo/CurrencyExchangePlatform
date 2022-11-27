@@ -4,9 +4,10 @@ import { AuthM } from "./Model/AuthM";
 import { AuthR as R } from "./AuthR";
 
 export class AuthCtrl {
-  router = express.Router({ mergeParams: true });
+  public router = express.Router({ mergeParams: true });
+  public authM = new AuthM();
 
-  constructor(private readonly authM: AuthM) {
+  constructor() {
 
     this.router.get(
       R.signIn.route,

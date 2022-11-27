@@ -11,8 +11,8 @@ export class TradePSQL extends BasePSQL {
 
         try {
             out = await this.db<TradeI>(TradeE.NAME)
-                .where('is_resolved', false)
-                .andWhere('is_deleted', false)
+                .where('is_resolved', 0)
+                .andWhere('is_deleted', 0)
                 .andWhere('target_date', '>=', dayjs())
                 .select();
         } catch (e) {
@@ -27,8 +27,8 @@ export class TradePSQL extends BasePSQL {
 
         try {
             out = await this.db<TradeI>(TradeE.NAME)
-            .where('is_resolved', false)
-            .andWhere('is_deleted', false)
+            .where('is_resolved', 0)
+            .andWhere('is_deleted', 0)
             .andWhere('target_date', '<', dayjs())
                 .select();
         } catch (e) {
@@ -48,7 +48,7 @@ export class TradePSQL extends BasePSQL {
         try {
             out = await this.db<TradeI>(TradeE.NAME)
                 .where('id_user', filter.idUser)
-                .andWhere('is_deleted', false)
+                .andWhere('is_deleted', 0)
                 .offset(filter.offset)
                 .limit(filter.limit)
                 .orderBy('is_resolved', 'asc')

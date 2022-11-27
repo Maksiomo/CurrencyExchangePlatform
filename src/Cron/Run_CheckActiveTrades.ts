@@ -1,10 +1,10 @@
 import axios from 'axios';
 import _, { Dictionary } from 'lodash';
 import cron from 'node-cron';
-import { env } from 'process';
 import { SupportedCurrenciesT } from '../Infrastructure/PSQL/Entity/WalletE';
 import { TradePSQL } from '../Infrastructure/PSQL/Repository/TradeSQL';
 import { RabbisSys, TradeProcessWorkerI } from '../System/RabbitSys';
+import path from 'path';
 
 const iCronSchedule = '5'; // время в минутах, через которое крон будет запускаться заново.
 
@@ -31,43 +31,46 @@ async function listMarketState(): Promise<Dictionary<MarketStateI[]>> {
 
     const avMarketState: MarketStateI[] = [];
 
-    const EXCHANGERATE_API_KEY = process.env;
+    const sApiKey = process.env.EXCHANGERATE_API_KEY;
 
     for (const pair of asCurrencyPairs) {
         const aCurrencies = pair.split('-');
 
         // всего 1500 запросов в месяц, хватит на то чтобы работало +/- 3 дня
-        const url = `https://v6.exchangerate-api.com/v6/${EXCHANGERATE_API_KEY}/pair/${aCurrencies[0]}/${aCurrencies[1]}`;
+        const url = `https://v6.exchangerate-api.com/v6/${sApiKey}/pair/${aCurrencies[0]}/${aCurrencies[1]}`;
         
         try {
             // пробуем получить ответ от AlphaVantage
             const axiosResponse = await axios.get(url);
             // Если все хорошо - парсим полученные данные
-            const vParsedData = JSON.parse(axiosResponse.data);
 
             avMarketState.push({
                sPair: pair,
-               iCurrentPrice: vParsedData.conversion_rate
+               iCurrentPrice: axiosResponse.data.conversion_rate
             });
 
         } catch (e) {
             console.log('Error: ', e);
         }
-
+        
     }
 
     return _.groupBy(avMarketState, 'sPair');
 }
 
 /** функция ставящая работу крона, проверяющего заказы на автозапуск раз в 5 минут */
-export async function runTradeCron() {
+async function runTradeCron() {
 
     // Инициализируем .env
-    require('dotenv').config();
+    require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
     const tradePSQL = new TradePSQL();
     const rabbitSys = new RabbisSys();
 
+    console.log('Запущен крон проверки актуальных запросов.');
+
     cron.schedule(`0 */${iCronSchedule} * * * *`, async function() {
+
+        console.log('Крон проводит запланированный прогон');
 
         /** Получаем актуальную информацию от бирж и баз данных */
         const [avMarketState, avActiveTrade, avOutdatedTrade] = await Promise.all([
@@ -103,3 +106,8 @@ export async function runTradeCron() {
         }
     })
 }
+
+void runTradeCron().catch((error) => {
+    console.log(error);
+    process.exit(1);
+});
