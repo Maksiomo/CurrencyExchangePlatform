@@ -58,7 +58,7 @@ export namespace TradeR {
         /** Параметры api запроса */
         export interface RequestI {
             user_context: Context; // данные о текущем пользователе
-            idTrade: number; // id запроса
+            id_trade: number; // id запроса
         }
 
         /** Параметры api ответа */

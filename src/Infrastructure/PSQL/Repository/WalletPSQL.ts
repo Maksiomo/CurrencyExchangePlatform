@@ -10,7 +10,7 @@ export class WalletPSQL extends BasePSQL {
 
         try {
             out = await this.db<WalletI>(WalletE.NAME)
-                .where('id_user', filter.idUser)
+                .where('user_id', filter.idUser)
                 .select();
         } catch (e) {
             console.log(e);
@@ -70,7 +70,7 @@ export class WalletPSQL extends BasePSQL {
         try {
             out = (await this.db(WalletE.NAME)
                 .where('id', data.id)
-                .upsert(validData))[0];
+                .update(validData));
         } catch (e) {
             console.log(e);
         }

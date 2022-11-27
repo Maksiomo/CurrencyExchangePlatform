@@ -59,6 +59,10 @@ export class WalletM {
                     currency: validData.currency, 
                     money: 0 
                 });
+
+                if (idWallet < 0) {
+                    error_cause = 'Ошибка при создании кошелька'
+                }
             }
         }
 
@@ -85,12 +89,13 @@ export class WalletM {
             // проверяем, есть ли у пользователя счет с этой валютой
             const vWallet = await this.walletPSQL.oneWalletsByFilter({ 
                 idUser: validData.user_context.id_user, 
-                idWallet: validData.idWallet,
+                idWallet: validData.id_wallet,
             });
             if (!vWallet) {
                 error_cause = 'У пользователя нет счета в этой валюте';
             }
-            vWallet.money += validData.amount;
+            vWallet.money = Number(vWallet.money) + validData.amount; 
+            console.log(vWallet);
             await this.walletPSQL.updateWallet(vWallet);
             iWalletMoney = vWallet.money;
         }

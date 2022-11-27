@@ -47,7 +47,7 @@ export class TradePSQL extends BasePSQL {
 
         try {
             out = await this.db<TradeI>(TradeE.NAME)
-                .where('id_user', filter.idUser)
+                .where('user_id', filter.idUser)
                 .andWhere('is_deleted', 0)
                 .offset(filter.offset)
                 .limit(filter.limit)
@@ -71,7 +71,7 @@ export class TradePSQL extends BasePSQL {
             out = await this.db<TradeI>(TradeE.NAME)
                 .where(qb => {
                     if (filter.idUser) {
-                        void qb.where('id_user', filter.idUser);
+                        void qb.where('user_id', filter.idUser);
                     }
                     if (filter.idTrade) {
                         void qb.where('id', filter.idTrade);
@@ -104,11 +104,12 @@ export class TradePSQL extends BasePSQL {
     public async updateTrade(data: TradeI): Promise<number>  {
         //TODO: придумай валидацию
         const validData = data;
+        console.log(validData);
         let out = -1;
         try {
             out = (await this.db(TradeE.NAME)
                 .where('id', validData.id)
-                .upsert(validData))[0];
+                .update(validData));
         } catch (e) {
             console.log(e);
         }

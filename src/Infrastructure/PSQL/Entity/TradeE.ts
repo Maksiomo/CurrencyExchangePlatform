@@ -5,7 +5,7 @@ import { SupportedCurrenciesT } from "./WalletE";
  */
 export interface TradeI {
     id?: number; // id транзакции
-    id_user: number; // id создателя транзакции
+    user_id: number; // id создателя транзакции
     money_out: number; // Сколько валюты хотим отдать на обмен
     currency_out: SupportedCurrenciesT; // Тип отдаваемой валюты
     money_in: number; // Сколько валюты хотим получить после обмена

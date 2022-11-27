@@ -19,7 +19,7 @@ async function workProcess(msg: Buffer) {
             const vTrade = await tradePSQL.oneWalletsByFilter({ idTrade: data.trade_id });
 
             // Получаем счета пользователя 
-            const avWallet = await walletPSQL.listWalletsByUser({ idUser: vTrade.id_user });
+            const avWallet = await walletPSQL.listWalletsByUser({ idUser: vTrade.user_id });
 
             const vWalletOut = avWallet.find((wallet) => {
                 return wallet.currency === vTrade.currency_out;
@@ -31,13 +31,13 @@ async function workProcess(msg: Buffer) {
 
             if (!vWalletIn || !vWalletOut) {
                 console.log('Счета, необходимые для осуществления обмена не существуют у запроса: ', data);
-            } else if (vWalletOut.money < vTrade.money_out) {
+            } else if (vWalletOut.money < Number(vTrade.money_out)) {
                 console.log('Недостаточно денег на счёте для осуществления операции по запросу: ', data);
             } else {
                 // Списываем деньги со входящего счета
-                vWalletOut.money -= vTrade.money_out;
+                vWalletOut.money =  Number(vWalletOut.money) - Number(vTrade.money_out);
                 // Пополняем входящий счет на сумму сделки
-                vWalletIn.money += vTrade.money_out / data.trade_price;
+                vWalletIn.money = Number(vWalletIn.money) + Number(vTrade.money_out) / data.trade_price;
                 // Ставим отметку, что сделка прошла успешно
                 vTrade.is_resolved = 1;
                 // Обновляем записи в БД
@@ -46,12 +46,14 @@ async function workProcess(msg: Buffer) {
                     walletPSQL.updateWallet(vWalletOut),
                     tradePSQL.updateTrade(vTrade)
                 ]);
+                console.log('Сделка проведена успешно, детали: ', data);
             }
         } else if (data.action === "reject") {
             // Если пришло сообщение с такой командой, ставим ему флаг что он удален
             const vTrade = await tradePSQL.oneWalletsByFilter({ idTrade: data.trade_id });
             vTrade.is_deleted = 1;
             await tradePSQL.updateTrade(vTrade);
+            console.log('Сделка успешно отменена, детали: ', data);
         } else {
             console.log('Некорректная команда для запроса: ', data);
         }
@@ -63,15 +65,14 @@ async function workProcess(msg: Buffer) {
 /** запускатор + подключение к считыванию из Rabbit очереди */
 async function run() {
 
-
     // Инициализируем .env
     require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 
-    const rabbitConnection: Connection = await client.connect(
-        'amqp://username:password@localhost:5672'
+    const connection: Connection = await client.connect(
+        'amqp://localhost:5672'
     );
 
-    const tradeChannel: Channel = await rabbitConnection.createChannel();
+    const tradeChannel: Channel = await connection.createChannel();
 
     await tradeChannel.assertQueue('active_trade');
 

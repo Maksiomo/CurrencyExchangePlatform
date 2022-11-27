@@ -13,7 +13,7 @@ export class RabbisSys {
 
     public async sendTradeToQueue(message: TradeProcessWorkerI){
         const rabbitConnection: Connection = await client.connect(
-            'amqp://username:password@localhost:5672'
+            'amqp://localhost:5672'
         );
 
         const channel: Channel = await rabbitConnection.createChannel();

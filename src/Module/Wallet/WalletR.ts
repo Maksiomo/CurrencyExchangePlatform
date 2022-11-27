@@ -51,7 +51,7 @@ export namespace WalletR {
         /** Параметры api запроса */
         export interface RequestI {
             user_context: Context; // данные о текущем пользователе
-            idWallet: number; // id счёта
+            id_wallet: number; // id счёта
             amount: number; // сумма пополнения
         }
 

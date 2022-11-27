@@ -12,7 +12,7 @@ export async function up(knex: Knex): Promise<void> {
             .index('id');
 
         table
-            .string('secure', 100)
+            .string('login', 100)
             .notNullable()
             .unique()
             .comment('Логин пользователя');

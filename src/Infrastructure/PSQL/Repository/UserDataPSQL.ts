@@ -62,7 +62,7 @@ export class UserDataPSQL extends BasePSQL {
         try {
             out = (await this.db(UserDataE.NAME)
                 .where('id', idUser)
-                .upsert(validData))[0];
+                .update(validData));
         } catch (e) {
             console.log(e);
         }

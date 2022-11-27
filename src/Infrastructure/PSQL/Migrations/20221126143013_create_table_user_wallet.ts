@@ -16,7 +16,7 @@ export async function up(knex: Knex): Promise<void> {
             .notNullable()
             .comment('id владельца кошелька')
 
-        table.decimal('money', 5)
+        table.decimal('money', 5, 2)
             .defaultTo(0)
             .comment('Баланс кошелька')
 

@@ -5,10 +5,12 @@ import { AuthCtrl } from "./Module/Auth/AuthCtrl";
 import { WalletCtrl } from "./Module/Wallet/WalletCtrl";
 import { TradeCtrl } from "./Module/Trade/TradeCtrl";
 import path from 'path';
+import bodyParser from 'body-parser';
 
 const app = express();
 
 app.use(cors());
+app.use(bodyParser.json());
 
 const port = 3000;
 

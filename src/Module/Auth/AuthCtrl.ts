@@ -9,7 +9,7 @@ export class AuthCtrl {
 
   constructor() {
 
-    this.router.get(
+    this.router.post(
       R.signIn.route,
       handler((req) => {
         const data = req.body;
@@ -17,7 +17,7 @@ export class AuthCtrl {
       })
     );
 
-    this.router.get(
+    this.router.post(
       R.signUp.route,
       handler((req) => {
         const data = req.body;

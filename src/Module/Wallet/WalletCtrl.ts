@@ -9,7 +9,7 @@ export class WalletCtrl {
 
   constructor() {
 
-    this.router.get(
+    this.router.post(
       R.listWallets.route,
       handler((req) => {
         const data = req.body;
@@ -17,7 +17,7 @@ export class WalletCtrl {
       })
     );
 
-    this.router.get(
+    this.router.post(
       R.addWallet.route,
       handler((req) => {
         const data = req.body;
@@ -25,7 +25,7 @@ export class WalletCtrl {
       })
     );
 
-    this.router.get(
+    this.router.post(
         R.refillWallet.route,
         handler((req) => {
           const data = req.body;

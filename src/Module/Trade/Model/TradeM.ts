@@ -68,7 +68,7 @@ export class TradeM {
                 error_cause = 'У пользователя нет счетов для осуществления требуемой операции';
             } else {
                 idTrade = await this.tradePSQL.addTrade({ 
-                    id_user: validData.user_context.id_user,
+                    user_id: validData.user_context.id_user,
                     money_in: validData.money_in,
                     currency_in: vWalletIn.currency,
                     money_out: validData.money_out,
@@ -97,9 +97,10 @@ export class TradeM {
             error_cause = 'Пользователь не авторизован';
         } else { 
             // проверяем, есть ли у пользователя счет с этой валютой
+            console.log(validData.id_trade);
             const vTrade = await this.tradePSQL.oneWalletsByFilter({ 
                 idUser: validData.user_context.id_user, 
-                idTrade: validData.idTrade,
+                idTrade: validData.id_trade,
             });
             if (!vTrade) {
                 error_cause = 'У пользователя нет такого запроса на обмен';

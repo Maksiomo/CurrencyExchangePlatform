@@ -10,7 +10,7 @@ export class TradeCtrl {
 
   constructor() {
 
-    this.router.get(
+    this.router.post(
       R.listTrades.route,
       handler((req) => {
         const data = req.body;
@@ -18,7 +18,7 @@ export class TradeCtrl {
       })
     );
 
-    this.router.get(
+    this.router.post(
       R.addTrade.route,
       handler((req) => {
         const data = req.body;
@@ -26,7 +26,7 @@ export class TradeCtrl {
       })
     );
 
-    this.router.get(
+    this.router.post(
         R.revokeTrade.route,
         handler((req) => {
           const data = req.body;
