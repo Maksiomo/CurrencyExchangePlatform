@@ -3,18 +3,40 @@ import { UserDataE, UserDataI } from "../Entity/UserDataE";
 
 export class UserDataPSQL extends BasePSQL {
     
-    /** Получить данные  зашифрованные данные пользователя по его логину */
-    public async oneUserData(sLoginSecure: string): Promise<UserDataI> {
+    /** Получить данные пользователя по его логину и (при необходимости) паролю */
+    public async oneUserData(sLogin: string, sPaswordSecure?: string): Promise<UserDataI> {
         let out: UserDataI = null;
         try {
             out = await this.db<UserDataI>(UserDataE.NAME)
-                .where('login_secure', sLoginSecure)
+                .where('login', sLogin)
+                .where(qb => {
+                    if (sLogin) {
+                        void qb.where('login', sLogin);
+                    }
+                    if (sPaswordSecure) {
+                        void qb.where('password_secure', sPaswordSecure);
+                    }
+                })
                 .first();
         } catch (e) {
             console.log(e);
         }
         return out;
     }
+
+    /** Получить данные пользователя по его id */
+    public async one(idUser: number): Promise<UserDataI> {
+        let out: UserDataI = null;
+        try {
+            out = await this.db<UserDataI>(UserDataE.NAME)
+                .where('id', idUser)
+                .first();
+        } catch (e) {
+            console.log(e);
+        }
+        return out;
+    }
+
 
     /** Создать новую транзакцию */
     public async addUserData(data: UserDataI): Promise<number> {

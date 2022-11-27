@@ -2,8 +2,8 @@
  * Описание пользователя
  */
 export interface UserDataI {
-    id: number; // id пользователя
-    login_secure: string; // зашифрованный логин пользователя
+    id?: number; // id пользователя
+    login: string; // логин пользователя
     password_secure: string; // зашифрованный пароль
 }
 

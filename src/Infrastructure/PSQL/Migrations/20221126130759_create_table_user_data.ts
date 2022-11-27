@@ -12,15 +12,14 @@ export async function up(knex: Knex): Promise<void> {
             .index('id');
 
         table
-            .string('login_secure', 100)
+            .string('secure', 100)
             .notNullable()
             .unique()
-            .comment('Зашифрованный логин пользователя');
+            .comment('Логин пользователя');
 
         table
             .string('password_secure', 100)
-            .notNullable()
-            .unique()
+            .notNullable() 
             .comment('Зашифрованный пароль пользователя');
 
         table.comment('Простая имплементация таблицы с зашифрованными пользовательскими данными');
