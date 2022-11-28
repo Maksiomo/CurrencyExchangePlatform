@@ -3,6 +3,7 @@ import { Context } from "../../../System/Context";
 import { UserDataPSQL } from "../../../Infrastructure/PSQL/Repository/UserDataPSQL";
 import { UserDataI } from "../../../Infrastructure/PSQL/Entity/UserDataE";
 import { AuthR as R } from "../AuthR";
+import { AuthV as V} from "../AuthV";
 /** модель пользовательских данных */
 export class AuthM {
 
@@ -14,14 +15,33 @@ export class AuthM {
     }
 
     /** зарегистрировать нового пользователя */
-    public async signIn(data: R.signIn.RequestI): Promise<R.signIn.ResponseI> {        
-        //TODO: придумай валидацию
-        const validData = data;
+    public async signIn(data: R.signIn.RequestI): Promise<R.signIn.ResponseI> {
+        let validData; 
+        let error_cause = '';
+        // Валидация
+        try {
+            validData = V.validSignIn().parse(data);
+        } catch (e) {
+            const errorList = JSON.parse(String(e));
+            error_cause =  `Ошибка валидации:   `;
+            for (const error of errorList) {
+                error_cause += `Ошибка с ${error.path[0]}: ${error.message};    `
+            }
+            return { 
+                user_context: null,
+                error_cause: error_cause
+            };
+        }
 
         const isLoginTaken = await this.userDataPSQL.oneUserDataByFilter(validData.login);
 
         if (isLoginTaken) {
-            throw new Error('Пользователь с таким логином уже существует, попробуйте войти, или зарегистрируйте нового пользователя')
+            error_cause = 'Пользователь с таким логином уже существует, попробуйте войти, или зарегистрируйте нового пользователя';
+        
+            return {
+                user_context: null,
+                error_cause: error_cause
+            }
         }
 
         const sPaswordSecure = md5(validData.password);
@@ -37,22 +57,29 @@ export class AuthM {
         };
 
         return { 
-            user_context: out
+            user_context: out,
+            error_cause: ''
         };
     }
 
     /** Войти зарегистрированному пользователю */
-    public async signUp(data: R.signUp.RequestI): Promise<R.signUp.ResponseI> {        
-        //TODO: придумай валидацию
-        const validData = data;
+    public async signUp(data: R.signUp.RequestI): Promise<R.signUp.ResponseI> {
 
+        let validData; 
         let error_cause = '';
-
-        /** проверяем зарегистрирован ли пользователь с таким логином */
-        const isLoginTaken = await this.userDataPSQL.oneUserDataByFilter(validData.login);
-
-        if (!isLoginTaken) {
-            error_cause = 'Пользователь с таким логином не существует, зарегистрируйте новый аккаунт';
+        // Валидация
+        try {
+            validData = V.validSignUp().parse(data);
+        } catch (e) {
+            const errorList = JSON.parse(String(e));
+            error_cause =  `Ошибка валидации:   `;
+            for (const error of errorList) {
+                error_cause += `Ошибка с ${error.path[0]}: ${error.message};    `
+            }
+            return { 
+                user_context: null,
+                error_cause: error_cause
+            };
         }
 
         const sPaswordSecure = md5(validData.password);

@@ -18,6 +18,7 @@ export namespace AuthR {
         /** Параметры api ответа */
         export interface ResponseI {
             user_context: Context; // данные о текущем пользователе
+            error_cause?: string; // причина неудачи
         }
 
     }
