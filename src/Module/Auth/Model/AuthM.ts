@@ -1,6 +1,7 @@
 import md5 from "md5";
 import { Context } from "../../../System/Context";
 import { UserDataPSQL } from "../../../Infrastructure/PSQL/Repository/UserDataPSQL";
+import { UserDataI } from "../../../Infrastructure/PSQL/Entity/UserDataE";
 import { AuthR as R } from "../AuthR";
 /** модель пользовательских данных */
 export class AuthM {
@@ -57,10 +58,14 @@ export class AuthM {
         const sPaswordSecure = md5(validData.password);
 
         /** Пробуем получить пользователя по логину и паролю */
-        const vUser = await this.userDataPSQL.oneUserData(validData.login, sPaswordSecure);
+        let vUser: UserDataI = await this.userDataPSQL.oneUserData(validData.login, sPaswordSecure);
 
         if (!vUser) {
-            vUser.id = -1;
+            vUser = {
+               id: -1,
+               login: '',
+               password_secure: '' 
+            }
             error_cause = 'Пароль или логин не соответствуют друг другу';
         }
 

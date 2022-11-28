@@ -36,10 +36,10 @@ export namespace TradeR {
         export interface RequestI {
             user_context: Context; // данные о текущем пользователе
             target_date: string; // дата к которой нужно совершить обмен
-            id_wallet_in: number; // счет с которого будет производиться покупка
-            id_wallet_out: number; // счет на который поступят деньги после обмена
-            money_in: number; // Сколько денег хочет отдать пользователь
-            money_out: number; // Сколько денег хочет получить пользователь
+            id_wallet_in: number; // счет на который поступят деньги после обмена
+            id_wallet_out: number; // счет с которого будет производиться покупка
+            money_in: number; // Сколько денег хочет получить пользователь
+            money_out: number; // Сколько денег хочет отдать пользователь
         }
 
         /** Параметры api ответа */

@@ -42,12 +42,13 @@ export class UserDataPSQL extends BasePSQL {
     public async addUserData(data: UserDataI): Promise<number> {
         //TODO: придумай валидацию
         const validData = data;
-        let out = -1;
+        let out:any = -1;
         try {
             out = (await this.db(UserDataE.NAME)
                 .insert(validData)
                 .onConflict('id')
-                .merge())[0];
+                .merge()
+                .returning('id'))[0].id;
         } catch (e) {
             console.log(e);
         }
@@ -62,7 +63,8 @@ export class UserDataPSQL extends BasePSQL {
         try {
             out = (await this.db(UserDataE.NAME)
                 .where('id', idUser)
-                .update(validData));
+                .update(validData)
+                .returning('id'))[0].id;
         } catch (e) {
             console.log(e);
         }

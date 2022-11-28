@@ -97,7 +97,6 @@ export class TradeM {
             error_cause = 'Пользователь не авторизован';
         } else { 
             // проверяем, есть ли у пользователя счет с этой валютой
-            console.log(validData.id_trade);
             const vTrade = await this.tradePSQL.oneWalletsByFilter({ 
                 idUser: validData.user_context.id_user, 
                 idTrade: validData.id_trade,

@@ -95,7 +95,6 @@ export class WalletM {
                 error_cause = 'У пользователя нет счета в этой валюте';
             }
             vWallet.money = Number(vWallet.money) + validData.amount; 
-            console.log(vWallet);
             await this.walletPSQL.updateWallet(vWallet);
             iWalletMoney = vWallet.money;
         }

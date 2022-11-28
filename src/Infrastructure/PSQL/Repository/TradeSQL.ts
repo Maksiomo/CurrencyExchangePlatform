@@ -93,7 +93,8 @@ export class TradePSQL extends BasePSQL {
             out = (await this.db(TradeE.NAME)
                 .insert(validData)
                 .onConflict('id')
-                .merge())[0];
+                .merge()
+                .returning('id'))[0].id;
         } catch (e) {
             console.log(e);
         }
@@ -104,12 +105,12 @@ export class TradePSQL extends BasePSQL {
     public async updateTrade(data: TradeI): Promise<number>  {
         //TODO: придумай валидацию
         const validData = data;
-        console.log(validData);
         let out = -1;
         try {
             out = (await this.db(TradeE.NAME)
                 .where('id', validData.id)
-                .update(validData));
+                .update(validData)
+                .returning('id'))[0].id;
         } catch (e) {
             console.log(e);
         }

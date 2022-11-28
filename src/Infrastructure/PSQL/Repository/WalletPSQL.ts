@@ -55,7 +55,8 @@ export class WalletPSQL extends BasePSQL {
             out = (await this.db(WalletE.NAME)
                 .insert(validData)
                 .onConflict('id')
-                .merge())[0];
+                .merge()
+                .returning('id'))[0].id;
         } catch (e) {
             console.log(e);
         }
@@ -70,7 +71,8 @@ export class WalletPSQL extends BasePSQL {
         try {
             out = (await this.db(WalletE.NAME)
                 .where('id', data.id)
-                .update(validData));
+                .update(validData)
+                .returning('id'))[0].id;
         } catch (e) {
             console.log(e);
         }
