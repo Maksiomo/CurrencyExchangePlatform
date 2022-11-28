@@ -18,7 +18,7 @@ export class AuthM {
         //TODO: придумай валидацию
         const validData = data;
 
-        const isLoginTaken = await this.userDataPSQL.oneUserData(validData.login);
+        const isLoginTaken = await this.userDataPSQL.oneUserDataByFilter(validData.login);
 
         if (isLoginTaken) {
             throw new Error('Пользователь с таким логином уже существует, попробуйте войти, или зарегистрируйте нового пользователя')
@@ -49,7 +49,7 @@ export class AuthM {
         let error_cause = '';
 
         /** проверяем зарегистрирован ли пользователь с таким логином */
-        const isLoginTaken = await this.userDataPSQL.oneUserData(validData.login);
+        const isLoginTaken = await this.userDataPSQL.oneUserDataByFilter(validData.login);
 
         if (!isLoginTaken) {
             error_cause = 'Пользователь с таким логином не существует, зарегистрируйте новый аккаунт';
@@ -58,7 +58,7 @@ export class AuthM {
         const sPaswordSecure = md5(validData.password);
 
         /** Пробуем получить пользователя по логину и паролю */
-        let vUser: UserDataI = await this.userDataPSQL.oneUserData(validData.login, sPaswordSecure);
+        let vUser: UserDataI = await this.userDataPSQL.oneUserDataByFilter(validData.login, sPaswordSecure);
 
         if (!vUser) {
             vUser = {

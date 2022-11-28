@@ -4,7 +4,7 @@ import { UserDataE, UserDataI } from "../Entity/UserDataE";
 export class UserDataPSQL extends BasePSQL {
     
     /** Получить данные пользователя по его логину и (при необходимости) паролю */
-    public async oneUserData(sLogin: string, sPaswordSecure?: string): Promise<UserDataI> {
+    public async oneUserDataByFilter(sLogin: string, sPaswordSecure?: string): Promise<UserDataI> {
         let out: UserDataI = null;
         try {
             out = await this.db<UserDataI>(UserDataE.NAME)

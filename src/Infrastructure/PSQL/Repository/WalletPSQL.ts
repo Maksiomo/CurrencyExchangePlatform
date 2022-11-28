@@ -11,6 +11,7 @@ export class WalletPSQL extends BasePSQL {
         try {
             out = await this.db<WalletI>(WalletE.NAME)
                 .where('user_id', filter.idUser)
+                .orderBy('id', 'asc')
                 .select();
         } catch (e) {
             console.log(e);

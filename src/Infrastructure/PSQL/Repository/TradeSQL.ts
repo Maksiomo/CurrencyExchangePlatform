@@ -51,7 +51,7 @@ export class TradePSQL extends BasePSQL {
                 .andWhere('is_deleted', 0)
                 .offset(filter.offset)
                 .limit(filter.limit)
-                .orderBy('is_resolved', 'asc')
+                .orderBy('id', 'asc')
                 .select();
         } catch (e) {
             console.log(e);
